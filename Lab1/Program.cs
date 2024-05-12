@@ -1,14 +1,40 @@
-﻿namespace Lab1
+﻿using System.Security;
+
+namespace Lab1
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            void glas(string output)
+            {
+                int flag = 0;
+                int id1 = 0;
+                int id2 = 0;
+
+                for (int i = 0; i < output.Length; i++)
+                {
+                    if ("aeiouy".Contains(output[i]) && flag == 0)
+                    {
+                        flag = 1;
+                        id1 = i;
+                    }
+                    else if ("aeiouy".Contains(output[i]))
+                    {
+                        flag = 2;
+                        id2 = i;
+                    }
+
+                }
+                if (flag == 2)
+                    Console.WriteLine(output.Substring(id1, ++id2));
+            }
+
             //lab1 Smolnikov
             string a = Console.ReadLine();
             string exept ="";
-
-            for (int i = 0; i < a.Length-1; i++) 
+            //была ошибка в ограничении for
+            for (int i = 0; i < a.Length; i++) 
             {
                 if (a[i] < 97 || a[i] > 122)
                     exept = exept + a[i];
@@ -33,18 +59,27 @@
                     a = a.Substring(a.Length / 2);
                     char[] ac = a.ToCharArray();
                     Array.Reverse(ac);
-                    Console.WriteLine(String.Concat<char>(bc) + String.Concat<char>(ac));
+                    string output = String.Concat<char>(bc) + String.Concat<char>(ac);
+                    Console.WriteLine(output);
+
+                    
                     foreach (var let in letters)
                         Console.WriteLine($"[{let.Key}] - {let.Value}");
+                    glas(output);
+
+
                     Console.ReadLine();
                 }
                 else
                 {
                     char[] b = a.ToCharArray();
                     Array.Reverse(b);
-                    Console.WriteLine(String.Concat<char>(b) + a);
+                    string output = String.Concat<char>(b) + a;
+                    Console.WriteLine(output);
+                    
                     foreach (var let in letters)
                         Console.WriteLine($"[{let.Key}] - {let.Value*2}");
+                    glas(output);
                     Console.ReadLine();
                 }
             }
