@@ -15,6 +15,16 @@
             }
             if (String.IsNullOrEmpty(exept))
             {
+                
+                var letters = new Dictionary<char, int>();
+                foreach (char c in a)
+                {
+                    if(letters.ContainsKey(c))
+                        letters[c] = ++letters[c];
+                    else
+                        letters.Add(c, 1);
+                }
+                
                 if (a.Length % 2 == 0)
                 {
                     string b = a.Substring(0, a.Length / 2);
@@ -24,6 +34,8 @@
                     char[] ac = a.ToCharArray();
                     Array.Reverse(ac);
                     Console.WriteLine(String.Concat<char>(bc) + String.Concat<char>(ac));
+                    foreach (var let in letters)
+                        Console.WriteLine($"[{let.Key}] - {let.Value}");
                     Console.ReadLine();
                 }
                 else
@@ -31,6 +43,8 @@
                     char[] b = a.ToCharArray();
                     Array.Reverse(b);
                     Console.WriteLine(String.Concat<char>(b) + a);
+                    foreach (var let in letters)
+                        Console.WriteLine($"[{let.Key}] - {let.Value*2}");
                     Console.ReadLine();
                 }
             }
