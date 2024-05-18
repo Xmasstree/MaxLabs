@@ -1,8 +1,9 @@
-﻿using System.Security;
+﻿using System.Diagnostics;
+using System.Security;
 using System.Text;
 
 namespace Lab1
-{
+{   //сортировка деревом поиска
     public class Tree_node
     {
         public Tree_node(char data)
@@ -44,10 +45,38 @@ namespace Lab1
                 Right.Tochar(list);
             return list.ToArray();
         }
+
+        
     }
+
     internal class Program
     {
-        
+        async static Task HttpRand(string str)
+        {
+            int length = str.Length-1;
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    string url = string.Format("http://www.randomnumberapi.com/api/v1.0/random?min=0&max={0}&count=1", length);
+                    using HttpResponseMessage response = await client.GetAsync(url);
+                    string content = await response.Content.ReadAsStringAsync();
+                    
+                    Console.WriteLine(content);
+                    content = content.Replace("[", "").Replace("]", "");
+                    int rnd = Convert.ToInt32(content);
+                    Console.WriteLine(str.Remove(rnd, 1));
+                }
+        }
+            catch
+            {
+                Random rnd = new Random();
+        int value = rnd.Next(0, length);
+        Console.WriteLine(value);
+                Console.WriteLine(str.Remove(value, 1));
+            }
+}
+        //поск строки гласной
         static void glas(string output)
         {
             int flag = 0;
@@ -71,7 +100,7 @@ namespace Lab1
             if (flag == 2)
                 Console.WriteLine(output.Substring(id1, ++id2));
         }
-
+        //быстрая сортировка
         static char[] QuickSort(char[] str, int minID, int maxID)
         { 
             if  (minID >= maxID)
@@ -124,10 +153,12 @@ namespace Lab1
             //lab1 Smolnikov
             string a = Console.ReadLine();
             char[] str = new char[a.Length];
+            string output = "";
             for (int i = 0; i < a.Length; i++)
                 str[i] = a[i];
             string exept ="";
             //была ошибка в ограничении for
+            //проверка на соотрветсвие требованиям строки
             for (int i = 0; i < a.Length; i++) 
             {
                 if (a[i] < 97 || a[i] > 122)
@@ -153,7 +184,7 @@ namespace Lab1
                     a = a.Substring(a.Length / 2);
                     char[] ac = a.ToCharArray();
                     Array.Reverse(ac);
-                    string output = String.Concat<char>(bc) + String.Concat<char>(ac);
+                    output = String.Concat<char>(bc) + String.Concat<char>(ac);
                     Console.WriteLine(output);
 
                     
@@ -168,7 +199,7 @@ namespace Lab1
                 {
                     char[] b = a.ToCharArray();
                     Array.Reverse(b);
-                    string output = String.Concat<char>(b) + a;
+                    output = String.Concat<char>(b) + a;
                     Console.WriteLine(output);
                     
                     foreach (var let in letters)
@@ -199,9 +230,10 @@ namespace Lab1
                     break;
 
             }
-            
 
-             
+            HttpRand(output);
+
+
             Console.ReadLine() ;
         }
     }
